@@ -25,77 +25,93 @@ if ($action === 'get_data') {
     exit;
 }
 
-// Update basket owner in XML based on basketNo and newOwner
-if ($action === 'update_basket_owner') {
-    $basketNo = isset($_POST['basketNo']) ? $_POST['basketNo'] : null;
-    $newOwner = isset($_POST['newOwner']) ? $_POST['newOwner'] : null;
-
-    if ($basketNo !== null && $newOwner !== null) {
-        $xml = simplexml_load_file('database.xml');
-        $basket = $xml->xpath("//basket[basketNo='$basketNo']")[0];
-
-        if ($basket) {
-            $basket->basketOwner = $newOwner;
-            $xml->asXML('database.xml');
-            echo json_encode(['success' => true, 'message' => 'Basket owner updated successfully']);
-            exit;
-        }
-    }
-
-    echo json_encode(['success' => false, 'message' => 'Invalid request parameters']);
-    exit;
-}
-
-// Update fruit quantity in XML based on basketNo, fruitName, and newQuantity
-if ($action === 'update_fruit_quantity') {
-    $basketNo = isset($_POST['basketNo']) ? $_POST['basketNo'] : null;
-    $fruitName = isset($_POST['fruitName']) ? $_POST['fruitName'] : null;
-    $newQuantity = isset($_POST['newQuantity']) ? $_POST['newQuantity'] : null;
-
-    if ($basketNo !== null && $fruitName !== null && $newQuantity !== null) {
-        $xml = simplexml_load_file('database.xml');
-        $basket = $xml->xpath("//basket[basketNo='$basketNo']")[0];
-
-        foreach ($basket->fruits->fruit as $fruit) {
-            if ((string)$fruit->name === $fruitName) {
-                $fruit->quantity = $newQuantity;
-                $xml->asXML('database.xml');
-                echo json_encode(['success' => true, 'message' => 'Fruit quantity updated successfully']);
-                exit;
-            }
-        }
-    }
-
-    echo json_encode(['success' => false, 'message' => 'Invalid request parameters']);
-    exit;
-}
-
-// Delete basket from XML based on basketNo
 if ($action === 'delete_basket') {
-    $basketNo = isset($_POST['basketNo']) ? $_POST['basketNo'] : null;
+    $basketNo = isset($_POST['basketNo']) ? (int)$_POST['basketNo'] : null;
 
     if ($basketNo !== null) {
         $xml = simplexml_load_file('database.xml');
-        $basketIndex = -1;
 
-        foreach ($xml->basket as $index => $basket) {
-            if ((int)$basket->basketNo === (int)$basketNo) {
-                $basketIndex = $index;
+        // Find the basket with the matching basketNo
+        $basketToDelete = null;
+        foreach ($xml->basket as $basket) {
+            if ((int)$basket->basketNo === $basketNo) {
+                $basketToDelete = $basket;
                 break;
             }
         }
 
-        if ($basketIndex !== -1) {
-            unset($xml->basket[$basketIndex]);
+        if ($basketToDelete !== null) {
+            // Remove the basket node
+            $dom = dom_import_simplexml($basketToDelete);
+            $dom->parentNode->removeChild($dom);
+
+            // Save the updated XML back to the file
             $xml->asXML('database.xml');
+
             echo json_encode(['success' => true, 'message' => 'Basket deleted successfully']);
-            exit;
+        } else {
+            // Basket with given basketNo not found
+            echo json_encode(['success' => false, 'message' => 'Basket not found']);
         }
+    } else {
+        // If basketNo parameter is missing or invalid
+        echo json_encode(['success' => false, 'message' => 'Invalid or missing basketNo parameter']);
+    }
+    exit; // Terminate script execution after handling the request
+}
+
+// Insert a new basket into the XML file
+if ($action === 'insert_basket') {
+    // Retrieve POST data sent from frontend
+    $ownerName = isset($_POST['ownerName']) ? $_POST['ownerName'] : '';
+    $fruits = isset($_POST['fruits']) ? $_POST['fruits'] : [];
+
+    // Validate input
+    if (empty($ownerName) || !is_array($fruits) || count($fruits) === 0) {
+        echo json_encode(['success' => false, 'message' => 'Invalid input data']);
+        exit;
     }
 
-    echo json_encode(['success' => false, 'message' => 'Invalid request parameters']);
+    // Load XML data
+    $xml = simplexml_load_file('database.xml');
+
+    // Create a new <basket> node
+    $newBasket = $xml->addChild('basket');
+    $newBasket->addChild('basketNo', getNextBasketNo($xml)); // Generate next available basketNo
+    $newBasket->addChild('basketOwner', htmlspecialchars($ownerName)); // Sanitize ownerName
+
+    // Add fruits to the basket
+    $fruitsNode = $newBasket->addChild('fruits');
+    foreach ($fruits as $fruitName) {
+        $fruitNode = $fruitsNode->addChild('fruit');
+        $fruitNode->addChild('name', htmlspecialchars($fruitName)); // Sanitize fruitName
+        $fruitNode->addChild('quantity', 1); // Default quantity
+    }
+
+    // Save the updated XML back to the file
+    $xml->asXML('database.xml');
+
+    echo json_encode(['success' => true, 'message' => 'Basket added successfully']);
     exit;
 }
+
+// Handle other actions or invalid requests
+echo json_encode(['success' => false, 'message' => 'Invalid action']);
+exit;
+
+// Helper function to get the next available basketNo
+function getNextBasketNo($xml) {
+    // Find the maximum basketNo currently in use and generate the next available one
+    $maxBasketNo = 0;
+    foreach ($xml->basket as $basket) {
+        $basketNo = (int)$basket->basketNo;
+        if ($basketNo > $maxBasketNo) {
+            $maxBasketNo = $basketNo;
+        }
+    }
+    return $maxBasketNo + 1; // Return next available basketNo
+}
+
 
 // Handle other actions or invalid requests
 echo json_encode(['success' => false, 'message' => 'Invalid action']);

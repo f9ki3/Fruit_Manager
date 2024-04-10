@@ -37,3 +37,25 @@ th {
 .form-row {
     margin-bottom: 10px;
 }
+
+
+.header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.header-1{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.header-1 input{
+    margin: 10px;
+}
+
+.header-1 button{
+    margin: 10px;
+}

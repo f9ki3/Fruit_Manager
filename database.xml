@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <baskets>
     <basket>
         <basketNo>1</basketNo>
@@ -9,13 +10,13 @@
             </fruit>
             <fruit>
                 <name>Fruit 2</name>
-                <quantity>1</quantity>
+                <quantity>5</quantity>
             </fruit>
             <!-- Other fruits -->
         </fruits>
     </basket>
     <basket>
-        <basketNo>1</basketNo>
+        <basketNo>2</basketNo>
         <basketOwner>Alex</basketOwner>
         <fruits>
             <fruit>
@@ -28,17 +29,17 @@
             </fruit>
             <fruit>
                 <name>Fruit 3</name>
-                <quantity>8</quantity>
+                <quantity>5</quantity>
             </fruit>
             <fruit>
                 <name>Fruit 4</name>
-                <quantity>1</quantity>
+                <quantity>10</quantity>
             </fruit>
             <!-- Other fruits -->
         </fruits>
     </basket>
     <basket>
-        <basketNo>1</basketNo>
+        <basketNo>3</basketNo>
         <basketOwner>Alex</basketOwner>
         <fruits>
             <fruit>

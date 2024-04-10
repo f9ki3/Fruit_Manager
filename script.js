@@ -31,14 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Loop through each basket data and create table rows
         data.forEach(basket => {
             const row = table.insertRow();
-            row.innerHTML = `<td>${basket.basketNo}</td>
-                         <td><input style="border: none; background-color: transparent; text-align: center" type="text" value="${basket.basketOwner}" onchange="updateBasketOwner(${basket.basketNo}, this.value)"></td>
-                         <td><input style="border: none; background-color: transparent; text-align: center" type="number" value="${basket.fruits['Fruit 1'] || 0}" onchange="updateFruitQuantity(${basket.basketNo}, 'Fruit 1', this.value)"></td>
-                         <td><input style="border: none; background-color: transparent; text-align: center" type="number" value="${basket.fruits['Fruit 2'] || 0}" onchange="updateFruitQuantity(${basket.basketNo}, 'Fruit 2', this.value)"></td>
-                         <td><input style="border: none; background-color: transparent; text-align: center" type="number" value="${basket.fruits['Fruit 3'] || 0}" onchange="updateFruitQuantity(${basket.basketNo}, 'Fruit 3', this.value)"></td>
-                         <td><input style="border: none; background-color: transparent; text-align: center" type="number" value="${basket.fruits['Fruit 4'] || 0}" onchange="updateFruitQuantity(${basket.basketNo}, 'Fruit 4', this.value)"></td>
-                         <td>${calculateTotalFruits(basket.fruits)}</td>
-                         <td><button onclick="deleteBasket(${basket.basketNo})">Delete</button></td>`;
+            row.innerHTML = `
+                <td>${basket.basketNo}</td>
+                <td><input class="owner-input" type="text" value="${basket.basketOwner}"></td>
+                <td><input class="fruit-input" type="number" value="${basket.fruits['Fruit 1'] || 0}"></td>
+                <td><input class="fruit-input" type="number" value="${basket.fruits['Fruit 2'] || 0}"></td>
+                <td><input class="fruit-input" type="number" value="${basket.fruits['Fruit 3'] || 0}"></td>
+                <td><input class="fruit-input" type="number" value="${basket.fruits['Fruit 4'] || 0}"></td>
+                <td>${calculateTotalFruits(basket.fruits)}</td>
+                <td><button class="delete-button" data-basket-no="${basket.basketNo}">Delete</button></td>`;
 
             // Apply color classes based on fruit quantities
             if (basket.fruits['Fruit 1'] > 5 || basket.fruits['Fruit 2'] > 5 || basket.fruits['Fruit 3'] > 5 || basket.fruits['Fruit 4'] > 5) {
@@ -52,6 +53,30 @@ document.addEventListener('DOMContentLoaded', function() {
             if (calculateTotalFruits(basket.fruits) === maxFruits) {
                 row.classList.add('yellow');
             }
+
+            // Attach event listener for owner input change
+            row.querySelector('.owner-input').addEventListener('change', function() {
+                updateBasketOwner(basket.basketNo, this.value);
+            });
+
+            // Attach event listener for fruit quantity input change
+            row.querySelectorAll('.fruit-input').forEach(input => {
+                input.addEventListener('change', function() {
+                    const fruitName = this.parentElement.cellIndex === 2 ? 'Fruit 1' :
+                                      this.parentElement.cellIndex === 3 ? 'Fruit 2' :
+                                      this.parentElement.cellIndex === 4 ? 'Fruit 3' :
+                                      'Fruit 4';
+                    updateFruitQuantity(basket.basketNo, fruitName, this.value);
+                });
+            });
+
+            // Attach event listener for delete button
+            const deleteButton = row.querySelector('.delete-button');
+            deleteButton.addEventListener('click', function() {
+                const basketNo = this.getAttribute('data-basket-no');
+                console.log('Delete clicked for basketNo:', basketNo);
+                deleteBasket(basketNo);
+            });
         });
 
         tableContainer.appendChild(table); // Append the table to the container
@@ -64,55 +89,85 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to update basket owner via AJAX
     function updateBasketOwner(basketNo, newOwner) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'backend.php?action=update_basket_owner', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    console.log('Basket owner updated successfully');
-                    loadBasketData(); // Refresh data after successful update
-                } else {
-                    console.error('Failed to update basket owner');
-                }
-            }
-        };
-        xhr.send(`basketNo=${basketNo}&newOwner=${encodeURIComponent(newOwner)}`);
+        sendRequest('POST', 'backend.php?action=update_basket_owner', `basketNo=${basketNo}&newOwner=${encodeURIComponent(newOwner)}`);
     }
 
     // Function to update fruit quantity via AJAX
     function updateFruitQuantity(basketNo, fruitName, newQuantity) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'backend.php?action=update_fruit_quantity', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    console.log('Fruit quantity updated successfully');
-                    loadBasketData(); // Refresh data after successful update
-                } else {
-                    console.error('Failed to update fruit quantity');
-                }
-            }
-        };
-        xhr.send(`basketNo=${basketNo}&fruitName=${fruitName}&newQuantity=${newQuantity}`);
+        sendRequest('POST', 'backend.php?action=update_fruit_quantity', `basketNo=${basketNo}&fruitName=${fruitName}&newQuantity=${newQuantity}`);
     }
 
     // Function to delete basket via AJAX
     function deleteBasket(basketNo) {
+        sendRequest('POST', 'backend.php?action=delete_basket', `basketNo=${basketNo}`);
+    }
+
+    // Generic function to send AJAX requests
+    function sendRequest(method, url, params) {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'backend.php?action=delete_basket', true);
+        xhr.open(method, url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    console.log('Basket deleted successfully');
-                    loadBasketData(); // Refresh data after successful delete
+                    console.log('Request successful');
+                    loadBasketData(); // Refresh data after successful request
                 } else {
-                    console.error('Failed to delete basket');
+                    console.error('Request failed');
                 }
             }
         };
-        xhr.send(`basketNo=${basketNo}`);
+        xhr.send(params);
     }
 });
+
+function add_record() {
+    // Retrieve input values
+    const ownerName = document.querySelector('input[placeholder="Owner Name"]').value;
+    const fruits = [];
+
+    // Loop through fruit input fields to gather fruit names
+    for (let i = 1; i <= 4; i++) {
+        const fruitName = document.querySelector(`input[placeholder="Fruit ${i}"]`).value;
+        if (fruitName.trim() !== '') {
+            fruits.push(fruitName);
+        }
+    }
+
+    // Construct XML data for the new basket
+    let xmlData = `<basket>\n`;
+    xmlData += `    <basketOwner>${ownerName}</basketOwner>\n`;
+    
+    if (fruits.length > 0) {
+        xmlData += `    <fruits>\n`;
+        fruits.forEach((fruitName) => {
+            xmlData += `        <fruit>\n`;
+            xmlData += `            <name>${fruitName}</name>\n`;
+            xmlData += `            <quantity>1</quantity>\n`; // Default quantity
+            xmlData += `        </fruit>\n`;
+        });
+        xmlData += `    </fruits>\n`;
+    }
+    
+    xmlData += `</basket>\n`;
+    fetch('backend.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/xml'
+        },
+        body: xmlData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Basket added successfully!');
+            // Optionally, update UI or perform additional actions upon success
+        } else {
+            alert('Failed to add basket. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error adding basket:', error);
+        alert('An error occurred while adding the basket. Please try again later.');
+    });
+}
