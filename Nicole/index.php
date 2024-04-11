@@ -35,8 +35,9 @@
     <hr>
 
     <div >
-        <!-- Display basket data in a table -->
-        <?php include 'display_table.php'?>
+        <table id="basketTableContainer" style="text-align: center;">
+            <?php include 'header.php'?>
+        </table>
     </div>
 
     
@@ -44,5 +45,7 @@
     <script src="addCategory.js"></script>
     <script src="display_category.js"></script>
     <script src="addRecord.js"></script>
+    <script src="delete.js"></script>
 </body>
 </html>
+

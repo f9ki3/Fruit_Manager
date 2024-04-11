@@ -1,5 +1,5 @@
 <?php
-function displayBasketRecords() {
+function getBasketRecordsTBody() {
     $xmlFilePath = 'basket_record.xml';
 
     // Check if the XML file exists
@@ -7,17 +7,8 @@ function displayBasketRecords() {
         // Load the XML file
         $xml = simplexml_load_file($xmlFilePath);
 
-        // Start building the HTML content for the table
-        $html = '<table border="1">
-                    <thead>
-                        <tr>
-                            <th>Record ID</th>
-                            <th>Owner Name</th>
-                            <th>Categories</th>
-                            <th>Total Number</th>
-                        </tr>
-                    </thead>
-                    <tbody>';
+        // Start building the HTML content for the tbody
+        $tbody = '';
 
         // Loop through each basket_record element
         foreach ($xml->basket_record as $record) {
@@ -25,33 +16,48 @@ function displayBasketRecords() {
             $ownerName = (string)$record['ownerName'];
             $totalNumber = (string)$record['totalNumber'];
 
-            // Extract category values
-            $categories = [];
-            foreach ($record->category as $category) {
-                $categories[] = (string)$category['value'];
-            }
-            $categoriesString = implode(', ', $categories);
+            // Convert empty totalNumber to 0
+            $totalNumber = ($totalNumber === '') ? '0' : $totalNumber;
 
-            // Append row to HTML table
-            $html .= "<tr>
-                        <td><p style='text-align: center'> $recordId</p> </td>
-                        <td><p style='text-align: center'> $ownerName</p> </td>
-                        <td><p style='text-align: center'> $categoriesString</p> </td>
-                        <td><p style='text-align: center'> $totalNumber</p> </td>
-                      </tr>";
+            // Start building row
+            $tbody .= "<tr>
+                        <td style='text-align: center;'>$recordId</td>
+                        <td style='text-align: center;'>$ownerName</td>";
+
+            // Loop through categories for this record
+            foreach ($record->category as $cat) {
+                $categoryValue = (string)$cat['value'];
+                $tbody .= '<td style="text-align: center;">' . htmlspecialchars($categoryValue) . '</td>';
+            }
+
+            // Add total number
+            $tbody .= "<td style='text-align: center;'>$totalNumber</td>
+                        <td style='text-align: center;'><button onclick='deleteItems(\"$recordId\")'>Delete</button></td>
+                    </tr>";
         }
 
-        // Complete the HTML content
-        $html .= '</tbody></table>';
-
-        // Display the HTML content within the specified div
-        echo '<div id="basketTableContainer">' . $html . '</div>';
+        // Return the HTML content for the tbody
+        return $tbody;
     } else {
-        // Display a message if the XML file does not exist
-        echo '<div id="basketTableContainer">No basket records found.</div>';
+        // Return an empty string if the XML file does not exist
+        return '';
     }
 }
 
-// Call the function to display basket records
-displayBasketRecords();
+// Usage: Call the function to get the tbody content
+$tbodyContent = getBasketRecordsTBody();
+
+// Display the tbody content within the specified div
+if (!empty($tbodyContent)) {
+    echo '<div id="basketTableContainer" style="text-align: center;">
+            <table border="1">
+                <tbody>
+                    ' . $tbodyContent . '
+                </tbody>
+            </table>
+          </div>';
+} else {
+    // Display a message if no basket records found
+    echo '<div id="basketTableContainer" style="text-align: center;">No basket records found.</div>';
+}
 ?>
