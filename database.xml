@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<baskets>
-    
-    
-    
-    <!-- Other baskets -->
-<basket><basketNo>1</basketNo><basketOwner>as</basketOwner><fruits><fruit><name>Fruit 1</name><quantity>12</quantity></fruit><fruit><name>Fruit 2</name><quantity>2</quantity></fruit><fruit><name>Fruit 3</name><quantity>1</quantity></fruit></fruits></basket><basket><basketNo>2</basketNo><basketOwner>sasa</basketOwner><fruits><fruit><name>Fruit 1</name><quantity>1</quantity></fruit><fruit><name>Fruit 2</name><quantity>2</quantity></fruit><fruit><name>Fruit 3</name><quantity>2</quantity></fruit><fruit><name>Fruit 4</name><quantity>2</quantity></fruit></fruits></basket></baskets>

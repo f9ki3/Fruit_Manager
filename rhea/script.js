@@ -1,3 +1,5 @@
+
+
 function add() {
     // Retrieve input values
     var ownerName = document.getElementById("ownerName").value;
@@ -54,7 +56,7 @@ function add() {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
+
     // Entry point when DOM content is loaded
     loadBasketData(); // Load initial basket data from the backend
 
@@ -74,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         xhr.send();
     }
-
     // Function to display basket data in HTML table
     function displayBasketData(data) {
         const tableContainer = document.getElementById('basketTableContainer');
@@ -83,6 +84,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const table = document.createElement('table');
         const headerRow = table.insertRow();
         headerRow.innerHTML = '<th>Basket No</th><th>Basket Owner</th><th>Apple</th><th>Banana</th><th>Mango</th><th>Guava</th><th>Total Fruits</th><th>Action</th>';
+
+        // Find the maximum total fruits amount across all baskets
+        let maxTotalFruits = 0;
+        data.forEach(basket => {
+            const totalFruits = calculateTotalFruits(basket.fruits);
+            if (totalFruits > maxTotalFruits) {
+                maxTotalFruits = totalFruits;
+            }
+        });
 
         // Loop through each basket data and create table rows
         data.forEach(basket => {
@@ -97,31 +107,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${calculateTotalFruits(basket.fruits)}</td>
                 <td><button class="delete-button" data-basket-no="${basket.basketNo}">Delete</button></td>`;
 
+            const totalFruits = calculateTotalFruits(basket.fruits);
+
             // Apply color classes based on fruit quantities
-            if (basket.fruits['Fruit 1'] > 5 || basket.fruits['Fruit 2'] > 5 || basket.fruits['Fruit 3'] > 5 || basket.fruits['Fruit 4'] > 5) {
+            if (totalFruits > 5) {
                 row.classList.add('blue');
-            } else {
+            } else if (totalFruits <= 5) {
                 row.classList.add('red');
             }
 
-            // Apply yellow background for the row with the maximum total fruits
-            const maxFruits = Math.max(...Object.values(basket.fruits));
-            if (calculateTotalFruits(basket.fruits) === maxFruits) {
+            // Check if this basket has the highest total fruits amount
+            if (totalFruits === maxTotalFruits) {
                 row.classList.add('yellow');
             }
 
             // Attach event listener for owner input change
-            row.querySelector('.owner-input').addEventListener('change', function() {
+            row.querySelector('.owner-input').addEventListener('input', function() {
                 updateBasketOwner(basket.basketNo, this.value);
             });
 
             // Attach event listener for fruit quantity input change
             row.querySelectorAll('.fruit-input').forEach(input => {
-                input.addEventListener('change', function() {
-                    const fruitName = this.parentElement.cellIndex === 2 ? 'Fruit 1' :
-                                      this.parentElement.cellIndex === 3 ? 'Fruit 2' :
-                                      this.parentElement.cellIndex === 4 ? 'Fruit 3' :
-                                      'Fruit 4';
+                input.addEventListener('input', function() {
+                    const fruitName = this.parentElement.previousElementSibling.innerText.trim();
                     updateFruitQuantity(basket.basketNo, fruitName, this.value);
                 });
             });
@@ -137,6 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         tableContainer.appendChild(table); // Append the table to the container
     }
+
+
 
     // Function to calculate total fruits for a basket
     function calculateTotalFruits(fruits) {
@@ -175,6 +185,31 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         xhr.send(params);
     }
-});
+    
+const inputs = document.querySelectorAll('.owner-input, .fruit-input');
 
+inputs.forEach(input => {
+    input.addEventListener('blur', function(event) {
+        const field = event.target.getAttribute('data-field');
+        const fruit = event.target.getAttribute('data-fruit');
+        const value = event.target.value.trim();
+
+        if (field === 'basketOwner') {
+            basket.basketOwner = value;
+        } else if (fruit) {
+            if (!basket.fruits) {
+                basket.fruits = {};
+            }
+            basket.fruits[fruit] = parseInt(value) || 0;
+        }
+        
+        console.log('Updated basket:', basket);
+    });
+
+    input.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.target.blur(); // Trigger blur event on Enter key press
+        }
+    });
+});
 
