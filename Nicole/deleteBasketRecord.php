@@ -1,44 +1,39 @@
 <?php
-// Check if recordId parameter is set in the GET request
+// Check if recordId is provided in the query string
 if (isset($_GET['recordId'])) {
+    // Retrieve the recordId from the query string
     $recordId = $_GET['recordId'];
 
-    // Path to the XML file
+    // Path to the basket_record XML file
     $xmlFilePath = 'basket_record.xml';
 
-    // Check if the XML file exists
-    if (file_exists($xmlFilePath)) {
-        // Load the XML file
-        $xml = simplexml_load_file($xmlFilePath);
+    // Load the XML file
+    $xml = simplexml_load_file($xmlFilePath);
 
-        // Find the record with matching recordId and remove it
-        $recordIndex = findRecordIndex($xml, $recordId);
-        if ($recordIndex !== false) {
-            unset($xml->basket_record[$recordIndex]);
-
-            // Save the modified XML back to the file
-            $xml->asXML($xmlFilePath);
-
-            // Send a success response
-            http_response_code(200); // Success HTTP status code
-            echo json_encode(array('message' => 'Record deleted successfully.'));
-            exit;
-        }
-    }
-
-    // If recordId is not found or XML file cannot be loaded
-    http_response_code(404); // Not Found HTTP status code
-    echo json_encode(array('message' => 'Record not found or XML file could not be loaded.'));
-    exit;
-}
-
-// Helper function to find the index of a record with a specific recordId
-function findRecordIndex($xml, $recordId) {
-    foreach ($xml->basket_record as $index => $record) {
+    // Find the basket_record node with matching id attribute
+    $recordToDelete = null;
+    foreach ($xml->basket_record as $record) {
         if ((string)$record['id'] === $recordId) {
-            return $index; // Return the index of the matching record
+            $recordToDelete = $record;
+            break;
         }
     }
-    return false; // Return false if recordId is not found
+
+    if ($recordToDelete !== null) {
+        // Remove the record node from XML
+        unset($recordToDelete[0]);
+
+        // Save the updated XML back to the file
+        file_put_contents($xmlFilePath, $xml->asXML());
+
+        // Return a success response
+        echo json_encode(['success' => true, 'message' => 'Record deleted successfully']);
+    } else {
+        // Return an error response if recordId is not found
+        echo json_encode(['success' => false, 'message' => 'Record not found']);
+    }
+} else {
+    // Return an error response if recordId is not provided
+    echo json_encode(['success' => false, 'message' => 'RecordId parameter is missing']);
 }
 ?>

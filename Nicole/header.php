@@ -80,19 +80,32 @@ function getBasketRecordsTBody() {
         // Start building the HTML content for the tbody
         $tbody = '';
 
-        // Loop through each basket_record element
+        $maxTotalNumber = 0; // Initialize max totalNumber
+
+        // Loop through each basket_record element to find maximum totalNumber
+        foreach ($xml->basket_record as $record) {
+            $totalNumber = (int)$record['totalNumber'];
+            if ($totalNumber > $maxTotalNumber) {
+                $maxTotalNumber = $totalNumber;
+            }
+        }
+
+        // Loop through each basket_record element to generate tbody content
         foreach ($xml->basket_record as $record) {
             $recordId = (string)$record['id'];
             $ownerName = (string)$record['ownerName'];
-            $totalNumber = (string)$record['totalNumber'];
+            $totalNumber = (int)$record['totalNumber'];
+            
+            // Determine row color based on totalNumber and maxTotalNumber
+            if ($totalNumber > $maxTotalNumber) {
+                $rowColor = 'yellow';
+            } elseif ($totalNumber >= 5) {
+                $rowColor = 'lightblue';
+            } else {
+                $rowColor = 'salmon';
+            }
 
-            // Convert empty totalNumber to 0
-            $totalNumber = ($totalNumber === '') ? '0' : $totalNumber;
-
-            // Determine row color based on totalNumber
-            $rowColor = ($totalNumber > 5) ? 'lightblue' : (($totalNumber < 5) ? 'salmon' : 'yellow');
-
-            // Start building row with specified color
+            // Build row with specified color
             $tbody .= "<tr style='background-color: $rowColor;'>
                             <td style='text-align: center;'>$recordId</td>
                             <td style='text-align: center;'>$ownerName</td>";
@@ -121,4 +134,5 @@ function getBasketRecordsTBody() {
 
 // Call the function to display basket records
 displayBasketRecords();
+
 ?>
