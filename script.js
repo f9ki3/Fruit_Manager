@@ -1,3 +1,59 @@
+function add() {
+    // Retrieve input values
+    var ownerName = document.getElementById("ownerName").value;
+    var apple = document.getElementById("apple").value;
+    var banana = document.getElementById("banana").value;
+    var mango = document.getElementById("mango").value;
+    var guava = document.getElementById("guava").value;
+
+    // Prepare fruits array
+    var fruits = [];
+    if (apple.trim() !== "") fruits.push(apple);
+    if (banana.trim() !== "") fruits.push(banana);
+    if (mango.trim() !== "") fruits.push(mango);
+    if (guava.trim() !== "") fruits.push(guava);
+
+    // Validate ownerName and fruits array
+    if (ownerName.trim() === "" || fruits.length === 0) {
+        alert("Please enter owner name and at least one fruit.");
+        return;
+    }
+
+    // Prepare data object to send via AJAX
+    var data = {
+        ownerName: ownerName,
+        fruits: fruits
+    };
+
+    // Send data using fetch API (modern approach)
+    fetch('add.php?action=insert_basket', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json(); // Parse response JSON
+        }
+        throw new Error('Network response was not ok.');
+    })
+    .then(result => {
+        if (result.success) {
+            alert('Record added successfully: ' + result.message);
+            // Optionally, you can perform additional actions upon success
+        } else {
+            alert('Failed to add record: ' + result.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error adding record:', error);
+        alert('Error adding record. Please try again.');
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // Entry point when DOM content is loaded
     loadBasketData(); // Load initial basket data from the backend
@@ -26,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const table = document.createElement('table');
         const headerRow = table.insertRow();
-        headerRow.innerHTML = '<th>Basket No</th><th>Basket Owner</th><th>Fruit 1</th><th>Fruit 2</th><th>Fruit 3</th><th>Fruit 4</th><th>Total Fruits</th><th>Action</th>';
+        headerRow.innerHTML = '<th>Basket No</th><th>Basket Owner</th><th>Apple</th><th>Banana</th><th>Mango</th><th>Guava</th><th>Total Fruits</th><th>Action</th>';
 
         // Loop through each basket data and create table rows
         data.forEach(basket => {
@@ -121,53 +177,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function add_record() {
-    // Retrieve input values
-    const ownerName = document.querySelector('input[placeholder="Owner Name"]').value;
-    const fruits = [];
 
-    // Loop through fruit input fields to gather fruit names
-    for (let i = 1; i <= 4; i++) {
-        const fruitName = document.querySelector(`input[placeholder="Fruit ${i}"]`).value;
-        if (fruitName.trim() !== '') {
-            fruits.push(fruitName);
-        }
-    }
-
-    // Construct XML data for the new basket
-    let xmlData = `<basket>\n`;
-    xmlData += `    <basketOwner>${ownerName}</basketOwner>\n`;
-    
-    if (fruits.length > 0) {
-        xmlData += `    <fruits>\n`;
-        fruits.forEach((fruitName) => {
-            xmlData += `        <fruit>\n`;
-            xmlData += `            <name>${fruitName}</name>\n`;
-            xmlData += `            <quantity>1</quantity>\n`; // Default quantity
-            xmlData += `        </fruit>\n`;
-        });
-        xmlData += `    </fruits>\n`;
-    }
-    
-    xmlData += `</basket>\n`;
-    fetch('backend.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/xml'
-        },
-        body: xmlData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Basket added successfully!');
-            // Optionally, update UI or perform additional actions upon success
-        } else {
-            alert('Failed to add basket. Please try again.');
-        }
-    })
-    .catch(error => {
-        console.error('Error adding basket:', error);
-        alert('An error occurred while adding the basket. Please try again later.');
-    });
-}
