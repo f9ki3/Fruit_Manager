@@ -48,21 +48,27 @@ function displayBasketRecords() {
 
         // Output JavaScript for handling delete button clicks
         echo '<script>
-                function deleteRecord(recordId) {
-                    if (confirm("Are you sure you want to delete this record?")) {
-                        // Send an AJAX request to deleteBasketRecord.php
-                        var xhttp = new XMLHttpRequest();
-                        xhttp.onreadystatechange = function() {
-                            if (this.readyState == 4 && this.status == 200) {
-                                // Reload the page to reflect changes after deletion
-                                location.reload();
-                            }
-                        };
-                        xhttp.open("GET", "deleteBasketRecord.php?recordId=" + recordId, true);
-                        xhttp.send();
+        function deleteRecord(recordId) {
+            if (confirm("Are you sure you want to delete this record?")) {
+                // Send an AJAX request to deleteBasketRecord.php
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            // Reload the page to reflect changes after deletion
+                            location.reload();
+                        } else {
+                            // Display error message if deletion fails
+                            alert("Error: " + this.responseText);
+                        }
                     }
-                }
-            </script>';
+                };
+                xhttp.open("GET", "deleteBasketRecord.php?recordId=" + recordId, true);
+                xhttp.send();
+            }
+        }
+        </script>';
+
     } else {
         // Handle case where categories.xml does not exist
         echo 'Categories XML file not found.';
@@ -70,7 +76,7 @@ function displayBasketRecords() {
 }
 
 function getBasketRecordsTBody() {
-    $xmlFilePath = 'basket_record.xml';
+    $xmlFilePath = 'nicole_cervantes.xml';
 
     // Check if the XML file exists
     if (file_exists($xmlFilePath)) {

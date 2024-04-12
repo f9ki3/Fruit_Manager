@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categoryValues = $data['categoryValues'];
 
     // Define the file path to save the XML file
-    $xmlFilePath = 'basket_record.xml';
+    $xmlFilePath = 'nicole_cervantes.xml';
 
     // Check if the XML file already exists
     $xml = new DOMDocument();
