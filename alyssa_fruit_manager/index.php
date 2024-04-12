@@ -7,27 +7,27 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-<body style="background-color: orange;">
+<body >
     <div class="header">
-        <h1 style="color: white">Fruit Basket Manager</h1>
+        <h1 style="color: black">Fruit Basket Manager</h1>
         <div>
         <hr>
         </div>
         <div style="display: flex;">
         
             <div style="width: 20%;">
-                <h5 style="font-size: 20px; margin: 5px 0px 10px 10px; font-weight: bolder; color: white">Add Category</h5>
+                <h5 style="font-size: 20px; margin: 5px 0px 10px 10px; font-weight: bolder; color: black">Add Category</h5>
                 
                 <div style="display: flex; flex-direction: row;">
-                    <input id="category" type="text" style="margin-left: 10px; border-radius: 10px; border: none; padding-left: 10px" placeholder="Category">
-                    <button style="margin-left: 10px; background-color: darkorange; border: 1px solid black; color: white; border: none; border-radius: 10px; width: 100%; padding: 10px; " onclick="addCategory()">Add </button>
-                    <button  style="margin-left: 10px; background-color: darkorange; border: 1px solid black; color: white; border: none; border-radius: 10px; width: 100%; padding: 10px; " onclick="reset_category()">Reset </button>
+                    <input id="category" type="text" style="margin-left: 10px; border-radius: 10px; border: 1px solid gray; padding-left: 10px" placeholder="Category">
+                    <button style="margin-left: 10px; background-color: darkorange; border: 1px solid black; color: black; border: 1px solid gray; border-radius: 10px; width: 100%; padding: 10px; " onclick="addCategory()">Add </button>
+                    <button  style="margin-left: 10px; background-color: darkorange; border: 1px solid black; color: black; border: 1px solid gray; border-radius: 10px; width: 100%; padding: 10px; " onclick="reset_category()">Reset </button>
                 </div>
             </div style="width: 80%">
             <div>
-                <h5 style="font-size: 20px; margin: 5px 0px 10px 10px; font-weight: bolder; color: white">Add Basket Owner</h5>
+                <h5 style="font-size: 20px; margin: 5px 0px 10px 10px; font-weight: bolder; color: black">Add Basket Owner</h5>
                 <div id="categories" style="display: flex; flex-direction: row;">
-                    <input id="ownerName" style="margin-left: 10px; border-radius: 10px; border: none; padding-left: 10px" type="text" placeholder="Owner Name">
+                    <input id="ownerName" style="margin-left: 10px; border-radius: 10px; border: 1px solid gray; padding-left: 10px" type="text" placeholder="Owner Name">
                     <div id="categoriesContainer">
                         <!-- Categories from XML will be displayed here -->
                         <!-- <input type="number" class="categoryInput" value="0">
@@ -35,8 +35,8 @@
                         <input type="number" class="categoryInput" value="0"> -->
                     </div>
                     <input type="hidden" id="totalNumber" value="0">
-                    <button style="margin-left: 10px; background-color: darkorange; border: 1px solid black; color: white; border: none; border-radius: 10px; width: 100%; padding: 10px; " onclick="addRecord()">Add</button>
-                    <button style="margin-left: 10px; background-color: darkorange; border: 1px solid black; color: white; border: none; border-radius: 10px; width: 100%; padding: 10px; " onclick="reFresh()">Refresh</button>
+                    <button style="margin-left: 10px; background-color: darkorange; border: 1px solid black; color: black; border: 1px solid gray; border-radius: 10px; width: 100%; padding: 10px; " onclick="addRecord()">Add</button>
+                    <button style="margin-left: 10px; background-color: darkorange; border: 1px solid black; color: black; border: 1px solid gray; border-radius: 10px; width: 100%; padding: 10px; " onclick="reFresh()">Refresh</button>
                 </div>
             </div>
         </div>
