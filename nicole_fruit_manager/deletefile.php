@@ -1,6 +1,6 @@
 <?php
 // List of files to delete
-$filesToDelete = array('alyssa.xml', 'categories.xml');
+$filesToDelete = array('nicole_cervantes.xml', 'categories.xml');
 
 // Function to delete a file
 function deleteFile($filename) {

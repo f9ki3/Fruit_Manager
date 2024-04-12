@@ -76,7 +76,7 @@ function displayBasketRecords() {
 }
 
 function getBasketRecordsTBody() {
-    $xmlFilePath = 'alyssa.xml';
+    $xmlFilePath = 'nicole_cervantes.xml';
 
     // Check if the XML file exists
     if (file_exists($xmlFilePath)) {

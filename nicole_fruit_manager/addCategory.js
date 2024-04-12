@@ -8,29 +8,29 @@ function addCategory() {
         return; // Exit function early if input is empty
     }
 
-    // Function to check if "alyssa.xml" file is empty
+    // Function to check if "nicole_cervantes.xml" file is empty
     function checkAlyssaFile() {
         $.ajax({
             type: 'GET',
-            url: 'checkAlyssaFile.php', // Modify to point to script checking alyssa.xml
+            url: 'checkAlyssaFile.php', // Modify to point to script checking nicole_cervantes.xml
             success: function(response) {
                 var isFileEmpty = (response.trim() === '');
                 
                 if (!isFileEmpty) {
                     alert('Cannot add category basket record must be empty');
                 } else {
-                    // "alyssa.xml" is empty, proceed to add the category
+                    // "nicole_cervantes.xml" is empty, proceed to add the category
                     addCategoryRequest();
                     window.location.reload(); // Reload the page after successful addition
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Error checking alyssa.xml:', error);
+                console.error('Error checking nicole_cervantes.xml:', error);
             }
         });
     }
 
-    // Function to add category after confirming "alyssa.xml" is empty
+    // Function to add category after confirming "nicole_cervantes.xml" is empty
     function addCategoryRequest() {
         // Make an AJAX request to add the category
         $.ajax({
@@ -50,6 +50,6 @@ function addCategory() {
         categoryInput.value = '';
     }
 
-    // Check if "alyssa.xml" file is empty before proceeding
+    // Check if "nicole_cervantes.xml" file is empty before proceeding
     checkAlyssaFile();
 }

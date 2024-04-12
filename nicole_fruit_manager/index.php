@@ -42,7 +42,7 @@
                         <input type="number" class="categoryInput" value="0"> -->
                     </div>
                     <input type="hidden" id="totalNumber" value="0">
-                    <button style="margin-left: 10px; background-color:  rgb(42, 3, 94); border: 1px solid white; color: white; border: 1px solid gray; border-radius: 10px; width: 30%; padding: 10px; " onclick="addRecord()">Add</button>
+                    <button style="margin-left: 10px; background-color:  rgb(42, 3, 94); border: 1px solid white; color: white; border: 1px solid gray; border-radius: 10px; width: 10%; padding: 10px; " onclick="addRecord()">Add</button>
                 </div>
             </div>
         </div>

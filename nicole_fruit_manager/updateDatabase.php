@@ -5,7 +5,7 @@ $ownerName = $_POST['ownerName'];
 $categoryValues = $_POST['categoryValues'];
 
 // Load XML file
-$xml = simplexml_load_file('alyssa.xml');
+$xml = simplexml_load_file('nicole_cervantes.xml');
 
 // Find the specific basket_record by recordId
 $recordToUpdate = $xml->xpath("//basket_record[@id='$recordId']")[0];
@@ -26,7 +26,7 @@ if ($recordToUpdate) {
     $recordToUpdate['totalNumber'] = $totalNumber;
 
     // Save updated XML back to file
-    $xml->asXML('alyssa.xml');
+    $xml->asXML('nicole_cervantes.xml');
 
     echo 'XML updated successfully';
 } else {

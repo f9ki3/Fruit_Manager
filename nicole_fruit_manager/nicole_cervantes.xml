@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<basket_records>
+  <basket_record id="661978e937240" ownerName="June" totalNumber="22">
+    <category id="1" value="5"/>
+    <category id="2" value="5"/>
+    <category id="3" value="12"/>
+  </basket_record>
+<basket_record id="661978f356c18" ownerName="Arnolda" totalNumber="3"><category id="1" value="1"/><category id="2" value="1"/><category id="3" value="1"/></basket_record><basket_record id="661978ffbcf52" ownerName="Michael" totalNumber="25"><category id="1" value="12"/><category id="2" value="8"/><category id="3" value="5"/></basket_record><basket_record id="66198be851f6d" ownerName="John" totalNumber="14"><category id="1" value="12"/><category id="2" value="1"/><category id="3" value="1"/></basket_record><basket_record id="66198ee65e4d1" ownerName="Arnold" totalNumber="23"><category id="1" value="1"/><category id="2" value="21"/><category id="3" value="1"/></basket_record></basket_records>
