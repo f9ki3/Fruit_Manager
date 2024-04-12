@@ -27,7 +27,7 @@ th {
 }
 
 .red {
-    background-color: salmon;
+    background-color: rgb(25, 0, 58);
 }
 
 .yellow {
@@ -64,8 +64,6 @@ th {
 #categories {
     display: flex;
     white-space: nowrap;
-    padding: 10px;
-    margin-top: 10px;
     padding-bottom: 10px;
     overflow-x: hidden; /* Hide horizontal scrollbar by default */
     transition: overflow-x 0.3s ease; /* Add smooth transition effect */
@@ -81,4 +79,5 @@ th {
     background-color: #f0f0f0;
     border-radius: 5px;
 }
+
 

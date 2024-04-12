@@ -10,7 +10,7 @@ function displayBasketRecords() {
         // Start building the HTML content for the table
         $html = '<div id="basketTableContainer" style="text-align: center;">
                     <table border="1">
-                        <thead>
+                        <thead style="background-color: ;">
                             <tr>
                                 <th style="text-align: center; width: 15%">Record ID</th>
                                 <th style="text-align: center; width: 20%">Owner Name</th>';
@@ -71,7 +71,7 @@ function displayBasketRecords() {
 
     } else {
         // Handle case where categories.xml does not exist
-        echo 'Categories XML file not found.';
+        // echo 'Categories XML file not found.';
     }
 }
 
@@ -101,31 +101,33 @@ function getBasketRecordsTBody() {
             $recordId = (string)$record['id'];
             $ownerName = (string)$record['ownerName'];
             $totalNumber = (int)$record['totalNumber'];
-            
-            // Determine row color based on totalNumber and maxTotalNumber
-            if ($totalNumber > $maxTotalNumber) {
-                $rowColor = 'yellow';
-            } elseif ($totalNumber >= 5) {
-                $rowColor = 'lightblue';
+           
+
+            // Determine row color based on totalNumber
+            if ($totalNumber == $maxTotalNumber) {
+                $rowColor = 'yellow'; // Highest totalNumber
+            } elseif ($totalNumber > 5 && $totalNumber < $maxTotalNumber) {
+                $rowColor = 'lightblue'; // Between 5 and highest totalNumber
             } else {
-                $rowColor = 'salmon';
+                $rowColor = 'salmon'; // Default color for other cases
             }
 
+
             // Build row with specified color
-            $tbody .= "<tr style='background-color: $rowColor;'>
-                            <td style='text-align: center;'>$recordId</td>
-                            <td style='text-align: center;'>$ownerName</td>";
+            $tbody .= "<tr style='background-color: $rowColor; border-bottom: 1px solid black'>
+                            <td style='text-align: center;' id='recordId'>$recordId</td>
+                            <td style='text-align: center;'><input id='ownerName' style='background: transparent; border: none; text-align: center; height: 30px' value='$ownerName'></td>";
 
             // Loop through categories for this record
             foreach ($record->category as $cat) {
                 $categoryValue = (string)$cat['value'];
-                $tbody .= '<td style="text-align: center;">' . htmlspecialchars($categoryValue) . '</td>';
+                $tbody .= '<td style="text-align: center;"><input id="categoryQTY" style="background: transparent; border: none; text-align: center; height: 30px"  value="' . htmlspecialchars($categoryValue) . '"></td>';
             }
 
             // Add total number and action button with onclick event
             $tbody .= "<td style='text-align: center;'>$totalNumber</td>
                             <td style='text-align: center;'>
-                                <button onclick='deleteRecord(\"$recordId\")'>Delete</button>
+                                <button style='margin-left: 10px; background-color: rgb(43, 3, 95); color: white; border: none; border-radius: 10px; width: 50%; padding: 10px; '  onclick='deleteRecord(\"$recordId\")'>Delete</button>
                             </td>
                         </tr>";
         }

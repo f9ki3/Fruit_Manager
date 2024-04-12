@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<baskets>
-    
-    
-    
-    <!-- Other baskets -->
-<basket><basketNo>2</basketNo><basketOwner>Fyke lleva</basketOwner><fruits><fruit><name>Fruit 1</name><quantity>7</quantity></fruit><fruit><name>Fruit 2</name><quantity>1</quantity></fruit><fruit><name>Fruit 3</name><quantity>0</quantity></fruit><fruit><name>Fruit 4</name><quantity>0</quantity></fruit></fruits></basket><basket><basketNo>5</basketNo><basketOwner>Arnold</basketOwner><fruits><fruit><name>Fruit 1</name><quantity>2</quantity></fruit><fruit><name>Fruit 2</name><quantity>0</quantity></fruit><fruit><name>Fruit 3</name><quantity>0</quantity></fruit><fruit><name>Fruit 4</name><quantity>1</quantity></fruit></fruits></basket><basket><basketNo>8</basketNo><basketOwner>Miguel</basketOwner><fruits><fruit><name>Fruit 1</name><quantity>0</quantity></fruit><fruit><name>Fruit 2</name><quantity>8</quantity></fruit><fruit><name>Fruit 3</name><quantity>1</quantity></fruit><fruit><name>Fruit 4</name><quantity>8</quantity></fruit></fruits></basket></baskets>

@@ -30,9 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Create a new record element
     $recordElement = $xml->createElement('basket_record');
 
-    // Generate a unique ID for the record
-    $recordId = uniqid(); // Generate a unique ID
-    $recordElement->setAttribute('id', $recordId); // Set ID attribute
+    // Generate a unique ID
+    $uniqId = uniqid();
+
+    // Calculate the CRC32 value and ensure it's a positive integer
+    $crc32Value = crc32($uniqId);
+    $crc32Positive = sprintf("%u", $crc32Value); // Convert to unsigned integer
+
+    // Get the last 4 digits of the CRC32 value
+    $fourDigitId = substr($crc32Positive, -4);
+
+    // Set the ID attribute (4-digit numerical ID)
+    $recordElement->setAttribute('id', $fourDigitId);
+
+    
 
     // Add ownerName and totalNumber as attributes of the record element
     $recordElement->setAttribute('ownerName', $ownerName);

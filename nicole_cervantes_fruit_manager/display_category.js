@@ -23,7 +23,7 @@ function displayCategories(xml) {
 
     var categories = xml.getElementsByTagName("category");
     for (var i = 0; i < categories.length; i++) {
-        var categoryName = categories[i].childNodes[0].nodeValue;
+        var categoryName = categories[i].textContent; // Use textContent to get the node value
 
         // Create a new input element
         var inputElement = document.createElement("input");
@@ -31,9 +31,11 @@ function displayCategories(xml) {
         inputElement.setAttribute("placeholder", categoryName);
         inputElement.setAttribute("class", 'categoryInput');
         inputElement.style.marginLeft = "10px";
+        inputElement.style.borderRadius = "10px"; // Set border radius
+        inputElement.style.border = "none"; // Set border
+        inputElement.style.padding= "10px"; // Set padding-left
 
         // Append the input element to the categoriesContainer
         categoriesContainer.appendChild(inputElement);
     }
 }
-

@@ -38,7 +38,7 @@ if(isset($_POST['category'])) {
     // Check if nicole_cervantes.xml file exists
     if (!file_exists($xmlFilePath)) {
         // Create a new XML structure for basket_record
-        $basketXml = new SimpleXMLElement('<basket_record ownerName="Fyke" totalNumber="19"></basket_record>');
+        $basketXml = new SimpleXMLElement('');
     } else {
         // Load existing XML file for basket_record
         $basketXml = simplexml_load_file($xmlFilePath);
