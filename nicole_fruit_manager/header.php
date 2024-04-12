@@ -76,42 +76,52 @@ function displayBasketRecords() {
 }
 
 function getBasketRecordsTBody() {
-    $xmlFilePath = 'nicole_cervantes.xml';
+    $xmlFilePath = 'alyssa.xml';
 
     // Check if the XML file exists
     if (file_exists($xmlFilePath)) {
         // Load the XML file
         $xml = simplexml_load_file($xmlFilePath);
 
-        // Start building the HTML content for the tbody
-        $tbody = '';
+        // Initialize an array to store sums of category values and totalNumber
+        $categorySums = [];
+        $totalNumberSum = 0;
 
-        $maxTotalNumber = 0; // Initialize max totalNumber
-
-        // Loop through each basket_record element to find maximum totalNumber
+        // Loop through each basket_record element to calculate category sums and totalNumber sum
         foreach ($xml->basket_record as $record) {
             $totalNumber = (int)$record['totalNumber'];
-            if ($totalNumber > $maxTotalNumber) {
-                $maxTotalNumber = $totalNumber;
+            $totalNumberSum += $totalNumber; // Add totalNumber to sum
+
+            foreach ($record->category as $category) {
+                $categoryId = (int)$category['id'];
+                $categoryValue = (int)$category['value'];
+
+                // Add category value to the sum for this category ID
+                if (isset($categorySums[$categoryId])) {
+                    $categorySums[$categoryId] += $categoryValue;
+                } else {
+                    $categorySums[$categoryId] = $categoryValue;
+                }
             }
         }
+
+        // Start building the HTML content for the tbody
+        $tbody = '';
 
         // Loop through each basket_record element to generate tbody content
         foreach ($xml->basket_record as $record) {
             $recordId = (string)$record['id'];
             $ownerName = (string)$record['ownerName'];
             $totalNumber = (int)$record['totalNumber'];
-           
 
             // Determine row color based on totalNumber
-            if ($totalNumber == $maxTotalNumber) {
+            if ($totalNumber == maxTotalNumber($xml)) {
                 $rowColor = 'yellow'; // Highest totalNumber
-            } elseif ($totalNumber > 5 && $totalNumber < $maxTotalNumber) {
+            } elseif ($totalNumber > 5 && $totalNumber < maxTotalNumber($xml)) {
                 $rowColor = 'lightblue'; // Between 5 and highest totalNumber
             } else {
                 $rowColor = 'salmon'; // Default color for other cases
             }
-
 
             // Build row with specified color
             $tbody .= "<tr style='background-color: $rowColor; border-bottom: 1px solid black'>
@@ -124,13 +134,25 @@ function getBasketRecordsTBody() {
                 $tbody .= '<td style="text-align: center;"><input id="categoryQTY" style="background: transparent; border: none; text-align: center; height: 30px"  value="' . htmlspecialchars($categoryValue) . '"></td>';
             }
 
-            // Add total number and action button with onclick event
+            // Add total number
             $tbody .= "<td style='text-align: center;'>$totalNumber</td>
-                            <td style='text-align: center;'>
-                                <button style='margin-left: 10px; background-color: rgb(43, 3, 95); color: white; border: none; border-radius: 10px; width: 50%; padding: 10px; '  onclick='deleteRecord(\"$recordId\")'>Delete</button>
-                            </td>
-                        </tr>";
+                        <td style='text-align: center;'>
+                            <button style='margin-left: 10px; background-color:  rgb(42, 3, 94); color: white; border: none; border-radius: 10px; width: 50%; padding: 10px; '  onclick='deleteRecord(\"$recordId\")'>Delete</button>
+                        </td>
+                    </tr>";
         }
+
+        // Add a row for category sums and totalNumber sum at the end
+        $tbody .= "<tr style='background-color: lightgreen; border-bottom: 1px solid black'><td></td><td style='text-align: center;'>Total Sum</td>";
+
+        // Loop through category sums to display them in the last row
+        foreach ($categorySums as $categoryId => $sum) {
+            $tbody .= "<td style='text-align: center;'>$sum</td>";
+        }
+
+        // Add totalNumber sum in the last row
+        $tbody .= "<td style='text-align: center;'>$totalNumberSum</td>
+                    <td style='text-align: center;'></td></tr>";
 
         // Return the HTML content for the tbody
         return $tbody;
@@ -139,6 +161,20 @@ function getBasketRecordsTBody() {
         return '<tr><td colspan="6" style="text-align: center;">No basket records found.</td></tr>';
     }
 }
+
+// Helper function to get the maximum totalNumber from XML
+function maxTotalNumber($xml) {
+    $maxTotalNumber = 0;
+    foreach ($xml->basket_record as $record) {
+        $totalNumber = (int)$record['totalNumber'];
+        if ($totalNumber > $maxTotalNumber) {
+            $maxTotalNumber = $totalNumber;
+        }
+    }
+    return $maxTotalNumber;
+}
+
+
 
 // Call the function to display basket records
 displayBasketRecords();

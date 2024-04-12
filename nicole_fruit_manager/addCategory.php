@@ -33,9 +33,9 @@ if(isset($_POST['category'])) {
 if(isset($_POST['category'])) {
     $categoryValue = $_POST['category'];
 
-    $xmlFilePath = 'nicole_cervantes.xml';
+    $xmlFilePath = 'alyssa.xml';
 
-    // Check if nicole_cervantes.xml file exists
+    // Check if alyssa.xml file exists
     if (!file_exists($xmlFilePath)) {
         // Create a new XML structure for basket_record
         $basketXml = new SimpleXMLElement('');

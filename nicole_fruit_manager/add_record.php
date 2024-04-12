@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categoryValues = $data['categoryValues'];
 
     // Define the file path to save the XML file
-    $xmlFilePath = 'nicole_cervantes.xml';
+    $xmlFilePath = 'alyssa.xml';
 
     // Check if the XML file already exists
     $xml = new DOMDocument();
@@ -30,30 +30,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Create a new record element
     $recordElement = $xml->createElement('basket_record');
 
-    // Generate a unique ID
-    $uniqId = uniqid();
+    // Generate a unique ID for the record
+    $recordId = uniqid();
 
-    // Calculate the CRC32 value and ensure it's a positive integer
-    $crc32Value = crc32($uniqId);
-    $crc32Positive = sprintf("%u", $crc32Value); // Convert to unsigned integer
-
-    // Get the last 4 digits of the CRC32 value
-    $fourDigitId = substr($crc32Positive, -4);
-
-    // Set the ID attribute (4-digit numerical ID)
-    $recordElement->setAttribute('id', $fourDigitId);
-
-    
+    // Set the ID attribute for the record
+    $recordElement->setAttribute('id', $recordId);
 
     // Add ownerName and totalNumber as attributes of the record element
     $recordElement->setAttribute('ownerName', $ownerName);
     $recordElement->setAttribute('totalNumber', $totalNumber);
 
     // Loop through categoryValues to add child elements
+    $categoryCounter = 1; // Initialize category ID counter
     foreach ($categoryValues as $category) {
         $categoryElement = $xml->createElement('category');
+        $categoryElement->setAttribute('id', $categoryCounter); // Set incremented ID
         $categoryElement->setAttribute('value', $category['value']);
         $recordElement->appendChild($categoryElement);
+        $categoryCounter++; // Increment the category ID counter
     }
 
     // Append the new record to the root element

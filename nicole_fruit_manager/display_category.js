@@ -32,7 +32,7 @@ function displayCategories(xml) {
         inputElement.setAttribute("class", 'categoryInput');
         inputElement.style.marginLeft = "10px";
         inputElement.style.borderRadius = "10px"; // Set border radius
-        inputElement.style.border = "none"; // Set border
+        inputElement.style.border = "1px solid gray"; // Set border
         inputElement.style.padding= "10px"; // Set padding-left
 
         // Append the input element to the categoriesContainer
