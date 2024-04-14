@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<basket_records>
+  <basket_record id="1" ownerName="Nicole" totalNumber="7">
+    <category id="1" value="5"/>
+    <category id="2" value="1"/>
+    <category id="3" value="1"/>
+  </basket_record>
+<basket_record id="2" ownerName="Alyssa" totalNumber="3"><category id="1" value="1"/><category id="2" value="1"/><category id="3" value="1"/></basket_record><basket_record id="3" ownerName="Rhea" totalNumber="27"><category id="1" value="5"/><category id="2" value="2"/><category id="3" value="20"/></basket_record></basket_records>

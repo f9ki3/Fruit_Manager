@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<basket_records>
+  <basket_record id="661b5d4af30e4" ownerName="JOhn" totalNumber="4">
+    <category id="1" value="1"/>
+    <category id="2" value="2"/>
+    <category id="3" value="1"/>
+  </basket_record>
+<basket_record id="661b5d51d2c49" ownerName="Sarh" totalNumber="6"><category id="1" value="1"/><category id="2" value="2"/><category id="3" value="3"/></basket_record><basket_record id="661b5d5d47a7c" ownerName="Michael" totalNumber="15"><category id="1" value="1"/><category id="2" value="2"/><category id="3" value="12"/></basket_record></basket_records>
