@@ -12,8 +12,8 @@ function displayBasketRecords() {
                     <table border="1">
                         <thead style="background-color: ;">
                             <tr>
-                                <th style="text-align: center; width: 15%">Record ID</th>
-                                <th style="text-align: center; width: 20%">Owner Name</th>';
+                                <th style="text-align: center; width: 15%">Basket No</th>
+                                <th style="text-align: center; width: 20%">Basket Owner</th>';
 
         // Collect all unique categories from categories.xml
         $categories = [];
@@ -26,7 +26,7 @@ function displayBasketRecords() {
         }
 
         // Complete the rest of the thead
-        $html .= '<th style="text-align: center;">Total Number</th>
+        $html .= '<th style="text-align: center;">Total Fruits</th>
                     <th style="text-align: center;">Action</th>
                 </tr>
             </thead>
