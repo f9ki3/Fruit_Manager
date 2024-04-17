@@ -6,15 +6,18 @@
     <title>Fruit Basket Manager</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
 </head>
 <body >
     <div class="header">
-        <h1 style="">Fruit Basket Manager</h1>
+        <h1 class="text-center text-secondary fw-bold">FRUIT BASKET LIST</h1>
+        <p style="text-align: center">by: Nicole Cervantes</p>
         <div>
         <div>
                 <!-- <button style="margin-left: 10px;  border: 1px solid gray; color:  1px solid gray; border-radius: 10px; width: 10%; padding: 10px; " id="reloadButton" onclick="reFresh()">Refresh</button> -->
-                <button style="margin-left: 10px;  border: 1px solid gray; color:  1px solid gray; border-radius: 10px; width: 10%; padding: 10px; " id="btnAddCategory">+ Add Fruit Category</button>
-                <button style="margin-left: 10px;  border: 1px solid gray; color:  1px solid gray; border-radius: 10px; width: 10%; padding: 10px; " id="btnAddBasket">+ Add Basket Owner</button>
+                <button class="btn btn-sm border btn-light" id="btnAddCategory">+ Add Fruit Category</button>
+                <button class="btn btn-sm border btn-light" id="btnAddBasket">+ Add Basket Owner</button>
         </div>
         <hr>
         </div>
@@ -48,8 +51,8 @@
         </div>
     </div>
 
-    <div >
-        <table id="basketTableContainer" style="text-align: center;">
+    <div class="container ">
+        <table id="basketTableContainer" style="text-align: center; color: white">
             <?php include 'header.php'?>
         </table>
     </div>

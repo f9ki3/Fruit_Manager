@@ -9,11 +9,11 @@ function displayBasketRecords() {
 
         // Start building the HTML content for the table
         $html = '<div id="basketTableContainer" style="text-align: center;">
-                    <table border="1">
+                    <table class="rounded" border="1">
                         <thead style="background-color: ;">
                             <tr>
-                                <th style="text-align: center; width: 15%">Basket No</th>
-                                <th style="text-align: center; width: 20%">Basket Owner</th>';
+                                <th style="text-align: center; width: 10%">Basket No</th>
+                                <th style="text-align: center; width: 10%">Basket Owner</th>';
 
         // Collect all unique categories from categories.xml
         $categories = [];
@@ -21,13 +21,13 @@ function displayBasketRecords() {
             $categoryValue = (string)$category;
             if (!in_array($categoryValue, $categories)) {
                 $categories[] = $categoryValue;
-                $html .= '<th style="text-align: center; width: 10%">' . htmlspecialchars($categoryValue) . '</th>';
+                $html .= '<th style="text-align: center; width: 2%">' . htmlspecialchars($categoryValue) . '</th>';
             }
         }
 
         // Complete the rest of the thead
-        $html .= '<th style="text-align: center;">Total Fruits</th>
-                    <th style="text-align: center;">Action</th>
+        $html .= '<th style="text-align: center;" width="15%">Total Fruits</th>
+                    <th style="text-align: center;" width="50%">Action</th>
                 </tr>
             </thead>
             <tbody>';
@@ -141,7 +141,7 @@ function getBasketRecordsTBody() {
             } elseif ($totalNumber > 5 && $totalNumber < maxTotalNumber($xml)) {
                 $rowColor = 'lightblue'; // Between 5 and highest totalNumber
             } else {
-                $rowColor = 'salmon'; // Default color for other cases
+                $rowColor = '#eb5151'; // Default color for other cases
             }
 
             // Build row with specified color
@@ -158,8 +158,8 @@ function getBasketRecordsTBody() {
             // Add total number
             $tbody .= "<td style='text-align: center;'>$totalNumber</td>
                         <td style='text-align: center;'>
-                            <button style='margin-left: 10px; background-color: orange; color: white; border: none; border-radius: 10px; width: 20%; padding: 10px; '  onclick='edit(\"$recordId\")'>Edit</button>
-                            <button style='margin-left: 10px; background-color: red; color: white; border: none; border-radius: 10px; width: 20%; padding: 10px; '  onclick='deleteRecord(\"$recordId\")'>Delete</button>
+                            <button class='btn btn-warning me-2' style='background-color: rgb(254,166,0); color: white'  onclick='edit(\"$recordId\")'>Edit</button>
+                            <button class='btn' style='background-color: rgb(254,0,0); color: white'  onclick='deleteRecord(\"$recordId\")'>Delete</button>
                         </td>
                     </tr>";
         }

@@ -20,7 +20,7 @@ function getBasketRecordsTBody() {
             $totalNumber = ($totalNumber === '') ? '0' : $totalNumber;
 
             // Start building row
-            $tbody .= "<tr>
+            $tbody .= "<tr >
                         <td style='text-align: center;'>$recordId</td>
                         <td style='text-align: center;'>$ownerName</td>";
 

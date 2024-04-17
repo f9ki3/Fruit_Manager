@@ -23,15 +23,15 @@ th {
 }
 
 .blue {
-    background-color: lightblue;
+    background-color: #0000FF;
 }
 
 .red {
-    background-color: rgb(25, 0, 58);
+    background-color: #eb5151;
 }
 
 .yellow {
-    background-color: yellow;
+    background-color: #FFFF00;
 }
 
 .form-row {

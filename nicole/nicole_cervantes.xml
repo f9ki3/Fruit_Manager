@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <basket_records>
   
-<basket_record id="2" ownerName="Alyssa" totalNumber="3"><category id="1" value="1"/><category id="2" value="1"/><category id="3" value="1"/></basket_record><basket_record id="3" ownerName="Rhea" totalNumber="27"><category id="1" value="5"/><category id="2" value="2"/><category id="3" value="20"/></basket_record></basket_records>
+<basket_record id="2" ownerName="Alyssa" totalNumber="3"><category id="1" value="1"/><category id="2" value="1"/><category id="3" value="1"/></basket_record><basket_record id="3" ownerName="Rhea" totalNumber="28"><category id="1" value="5"/><category id="2" value="2"/><category id="3" value="21"/></basket_record><basket_record id="4" ownerName="John" totalNumber="8"><category id="1" value="1"/><category id="2" value="5"/><category id="3" value="2"/></basket_record></basket_records>
